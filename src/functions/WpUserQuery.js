@@ -1,4 +1,4 @@
-const fetch = require("isomorphic-unfetch")
+const fetch = require("node-fetch")
 const { v4: uuidv4 } = require("uuid")
 
 async function login() {
