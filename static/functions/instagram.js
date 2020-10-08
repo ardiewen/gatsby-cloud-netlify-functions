@@ -15,7 +15,7 @@ async function getInstagramPosts() {
   if (timeSinceLastFetch <= 1800000) {
     return cache.posts
   } else {
-    const response = await fetch.get(url)
+    const response = await fetch(url)
     const { data } = await response.json()
 
     cache.lastFetch = Date.now()
