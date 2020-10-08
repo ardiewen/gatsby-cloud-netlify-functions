@@ -12,17 +12,18 @@
 const util = require("util")
 const exec = util.promisify(require("child_process").exec)
 
-exports.onPostBuild = async () => {
-  const buildFunctions = async () => {
-    const { stdout, stderr } = await exec("yarn run lambda")
-    if (stderr) {
-      console.log(`stderr: ${stderr}`)
-      return
-    }
-    if (stdout) {
-      console.log(`stdout: ${stdout}`)
-    }
+const buildFunctions = async () => {
+  const { stdout, stderr } = await exec("yarn run lambda")
+  if (stderr) {
+    console.log(`stderr: ${stderr}`)
+    return
   }
+  if (stdout) {
+    console.log(`stdout: ${stdout}`)
+  }
+}
+
+exports.onPostBuild = async () => {
   await buildFunctions()
 }
 

@@ -1,5 +1,4 @@
-const axios = require("axios")
-
+const fetch = require("node-fetch")
 const url =
   "https://www.instagram.com/graphql/query/?query_hash=56a7068fea504063273cc2120ffd54f3&variables={%22id%22:%2225233049542%22,%22first%22:12,%22after%22:null}"
 
@@ -16,7 +15,7 @@ async function getInstagramPosts() {
   if (timeSinceLastFetch <= 1800000) {
     return cache.posts
   } else {
-    const response = await axios.get(url)
+    const response = await fetch.get(url)
     const { data } = await response.json()
 
     cache.lastFetch = Date.now()
