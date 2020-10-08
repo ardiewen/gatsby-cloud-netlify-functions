@@ -12,20 +12,40 @@
 const util = require("util")
 const exec = util.promisify(require("child_process").exec)
 
-const buildFunctions = async () => {
-  const { stdout, stderr } = await exec("yarn run lambda")
-  if (stderr) {
-    console.log(`stderr: ${stderr}`)
-    return
-  }
-  if (stdout) {
-    console.log(`stdout: ${stdout}`)
-  }
-}
-
 exports.onPostBuild = async () => {
+  const buildFunctions = async () => {
+    // NOTE: the gatsby build process automatically copies /static/functions to /public/functions
+    const { stdout, stderr } = await exec(
+      "cd ./public/functions && yarn install"
+    )
+    if (stderr) {
+      console.log(`stderr: ${stderr}`)
+      return
+    }
+    if (stdout) {
+      console.log(`stdout: ${stdout}`)
+    }
+  }
   await buildFunctions()
 }
+
+// const util = require("util")
+// const exec = util.promisify(require("child_process").exec)
+
+// const buildFunctions = async () => {
+//   const { stdout, stderr } = await exec("yarn run lambda")
+//   if (stderr) {
+//     console.log(`stderr: ${stderr}`)
+//     return
+//   }
+//   if (stdout) {
+//     console.log(`stdout: ${stdout}`)
+//   }
+// }
+
+// exports.onPostBuild = async () => {
+//   await buildFunctions()
+// }
 
 // exports.onPostBuild = () => {
 //   // Configure where the functions are kept and where we want to move them.
