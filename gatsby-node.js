@@ -6,28 +6,40 @@
 
 // You can delete this file if you're not using it
 // const glob = require("glob")
-// const path = require("path")
-// const fs = require("fs")
+const path = require("path")
+const fs = require("fs")
+// const util = require("util")
+// const exec = util.promisify(require("child_process").exec)
 
-const util = require("util")
-const exec = util.promisify(require("child_process").exec)
+const { zipFunctions } = require("@netlify/zip-it-and-ship-it")
 
 exports.onPostBuild = async () => {
-  const buildFunctions = async () => {
-    // NOTE: the gatsby build process automatically copies /static/functions to /public/functions
-    const { stdout, stderr } = await exec(
-      "cd ./public/functions && yarn install"
-    )
-    if (stderr) {
-      console.log(`stderr: ${stderr}`)
-      return
-    }
-    if (stdout) {
-      console.log(`stdout: ${stdout}`)
-    }
+  const srcLocation = path.join(__dirname, `./src/functions`)
+  const outputLocation = path.join(__dirname, `./public/functions`)
+
+  if (!fs.existsSync(outputLocation)) {
+    fs.mkdirSync(outputLocation)
   }
-  await buildFunctions()
+
+  return zipFunctions(srcLocation, outputLocation)
 }
+
+// exports.onPostBuild = async () => {
+//   const buildFunctions = async () => {
+//     // NOTE: the gatsby build process automatically copies /static/functions to /public/functions
+//     const { stdout, stderr } = await exec(
+//       "cd ./public/functions && yarn install"
+//     )
+//     if (stderr) {
+//       console.log(`stderr: ${stderr}`)
+//       return
+//     }
+//     if (stdout) {
+//       console.log(`stdout: ${stdout}`)
+//     }
+//   }
+//   await buildFunctions()
+// }
 
 // const util = require("util")
 // const exec = util.promisify(require("child_process").exec)
