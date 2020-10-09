@@ -1,2 +1,5 @@
 [build]
   functions="public/functions"
+
+[dev]
+  functions="src/functions"
